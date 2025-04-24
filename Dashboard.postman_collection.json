@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "1e6bb47d-d0a5-4026-8d6f-4340129a2da6",
+		"name": "Dashboard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27989482",
+		"_collection_link": "https://galactic-robot-991107.postman.co/workspace/testing~5753082b-5ed1-443e-a6b6-2fee203e0447/collection/27989482-1e6bb47d-d0a5-4026-8d6f-4340129a2da6?action=share&source=collection_link&creator=27989482"
+	},
+	"item": [
+		{
+			"name": "UsersList",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{dashboardUrl}}/user",
+					"host": [
+						"{{dashboardUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserInfo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{dashboardUrl}}/user/10",
+					"host": [
+						"{{dashboardUrl}}"
+					],
+					"path": [
+						"user",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"name\": \"abhishek\",\n        \"email\": \"abhidixit342@example.org\",\n        \"age\": 52,\n        \"points\": 97,\n        \"address\": \"55896 Ernestina Stravenue\\nNorth Floyd, NY 13299-8459\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{dashboardUrl}}/user",
+					"host": [
+						"{{dashboardUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"email\": \"csss bhatiacx\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{dashboardUrl}}/user/11",
+					"host": [
+						"{{dashboardUrl}}"
+					],
+					"path": [
+						"user",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUser",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{dashboardUrl}}/user/11",
+					"host": [
+						"{{dashboardUrl}}"
+					],
+					"path": [
+						"user",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AggregateAgeWithPoints",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{dashboardUrl}}/group/points",
+					"host": [
+						"{{dashboardUrl}}"
+					],
+					"path": [
+						"group",
+						"points"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
