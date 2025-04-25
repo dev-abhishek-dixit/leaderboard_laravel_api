@@ -56,11 +56,17 @@ class UserController extends Controller
     public function store(UserCreateRequest $request)
     {
         $data = $request->validated();
-        $user = app(UserService::class)->createUser($data);
-        if ($user) {
-             GenerateQrCodeJob::dispatch($user)->delay(now()->addSeconds(10));
+        try {
+            $user = app(UserService::class)->createUser($data);
+            if ($user) {
+                 GenerateQrCodeJob::dispatch($user)->delay(now()->addSeconds(10));
+            }
+            return new UserResource($user, 'User created successfully');
+        }catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error creating user: ' . $e->getMessage()
+            ], 500);
         }
-        return new UserResource($user, 'User created successfully');
     }
 
     /**
@@ -74,16 +80,17 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $user = app(UserService::class)->updateUser($id, $data);
-        if ($user) {
-            if (request()->has('points')) {
-                $usersList = app(UserService::class)->getAllUsers($filter = False);
-                return UserResource::collection($usersList)
-                       ->additional(['msg' => 'User updated successfully']);
-            }else{
+        try {
+            $user = app(UserService::class)->updateUser($id, $data);
+            if ($user) {
                 return new UserResource($user, 'User updated successfully');
             }
+            return  new UserResource(null, 'User not found');
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error updating user: ' . $e->getMessage()
+            ], 500);
         }
-        return  new UserResource(null, 'User not found');
     }
 
     /**
@@ -94,11 +101,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = app(UserService::class)->deleteUser($id);
-        if ($user) {
-            return new UserResource(null, 'User deleted successfully');
+        try {
+            $user = app(UserService::class)->deleteUser($id);
+            if ($user) {
+                return new UserResource(null, 'User deleted successfully');
+            }
+            return  new UserResource(null, 'User not found');
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error deleting user: ' . $e->getMessage()
+            ], 500);
         }
-        return  new UserResource(null, 'User not found');
     }
     /**
      * Get the points of user grouping them by points.

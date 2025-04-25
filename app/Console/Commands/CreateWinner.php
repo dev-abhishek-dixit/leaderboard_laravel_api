@@ -34,30 +34,36 @@ class CreateWinner extends Command
      */
     public function handle()
     {
-        $users = User::select('id', 'points')
-            ->orderBy('points', 'desc')
-            ->take(2)->get();
-        if ($users->count()==0) {
-            $this->info('No users found.');
-            return ;
-        }
-        if ($users->count() == 1) {
-              $users[0]->winner()->create([
-                'winner_points' => $users[0]->points,
-              ]);
-              $this->info('Winner created successfully for user ID: ' . $users[0]->id . ' with points: ' . $users[0]->points);
-              return ;
-        } 
-        if ($users[0]->points > $users[1]->points){
-            /**
-             * i may update only timestamp of the winner if it exists with same 
-             * user_id and points but currently i am creating a new winner
-             */
-            $users[0]->winner()->create([
-                'winner_points' => $users[0]->points,
-            ]);
-            $this->info('Winner created successfully for user ID: ' . $users[0]->id . ' with points: ' . $users[0]->points);
-        }
+        try {
+            $users = User::select('id', 'points')
+                ->orderBy('points', 'desc')
+                ->take(2)->get();
+            if ($users->count()==0) {
+                $this->info('No users found.');
+                return ;
+            }
+            if ($users->count() == 1) {
+                $users[0]->winner()->create([
+                    'winner_points' => $users[0]->points,
+                ]);
+                $this->info('Winner created successfully for user ID: ' . $users[0]->id . ' with points: ' . $users[0]->points);
+                return ;
+            } 
+            if ($users[0]->points > $users[1]->points){
+                /**
+                 * i may update only timestamp of the winner if it exists with same 
+                 * user_id and points but currently i am creating a new winner
+                 */
+                $users[0]->winner()->create([
+                    'winner_points' => $users[0]->points,
+                ]);
+                $this->info('Winner created successfully for user ID: ' . $users[0]->id . ' with points: ' . $users[0]->points);
+            }else{
+                $this->info('No winner created. Points are same for both users.');
+            }
+        } catch (\Exception $e) {
+            $this->error('Error creating winner: ' . $e->getMessage());
+        }    
         
     }
 }

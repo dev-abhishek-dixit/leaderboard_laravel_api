@@ -27,7 +27,7 @@ class ResetUsersPoint extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Reset Users points to 0';
 
     /**
      * Execute the console command.
